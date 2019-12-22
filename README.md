@@ -1,4 +1,4 @@
-#libez
+# libez
 
 (C) 2019 John D. Robertson <john@rrci.com>
 
