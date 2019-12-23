@@ -32,7 +32,7 @@ includes the source code location from which the function was called), and your
 program is terminated. If your app needs to recover from such an error, simply
 erase the "ez\_" prefix from the function call and the original unwrapped
 function gets called. You may then implement the recovery code where God
-intended it to be - right where you make the function call!
+intended it to be - right where you make the function call.
 
 In effect the EZ method provides the utility of throwing exceptions, but
 without the catch - Woohoo!
