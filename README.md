@@ -10,8 +10,7 @@ Reasoning for this is simple; Many function calls can fail for a variety of
 reasons, some or even most of which are obscure. However, it is both insecure
 and counterproductive not to check for said failures. Unfortunately coding
 proper checks and/or recovery from failures will involve (often complex) logic
-constructs, and detracts from understanding the primary logic of your source
-code.
+constructs, and detracts from the readability of your source code.
 
 Sometimes your app needs to recover, and so you must supply this code, but more
 often than not a boilerplate approach is sufficient. The EZ method is a
