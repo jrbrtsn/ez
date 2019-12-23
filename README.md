@@ -78,13 +78,13 @@ unnecessary complexity.
 
 Two macros located in *ez.h* help minimize the amount of source code required
 in the header and implementation files.  Using these is optional. The DEBUG
-version of the wrapper passes the C preprocessor macros *__FILE__*, *__LINE__*,
-and *__func__* as the first three arguments to  *\_ez\_fnXXX()* so that the
-source location of the function call may be included in error messages. For the
-production version these macros are not passed, and the source code location of
-the function call cannot be included in the error message. This is usually fine
-since it should be rare that errors get caught with EZ error handling by the
-time your app reaches production.
+version of the wrapper passes the C preprocessor macros *\_\_FILE\_\_*,
+*\_\_LINE\_\_*, and *\_\_func\_\_* as the first three arguments to
+*\_ez\_fnXXX()* so that the source location of the function call may be
+included in error messages. For the production version these macros are not
+passed, and the source code location of the function call cannot be included in
+the error message. This is usually fine since it should be rare that errors get
+caught with EZ error handling by the time your app reaches production.
 
 ## Crowd Sourcing
 
