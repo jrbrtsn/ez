@@ -12,7 +12,7 @@ and counterproductive not to check for said failures. Unfortunately coding
 proper checks and/or recovery from failures will involve (often complex) logic
 constructs, and detracts from the readability of your source code.
 
-Sometimes your app needs to recover, and so you must supply this code, but more
+Sometimes your app needs to recover and so you must supply this code, but more
 often than not a boilerplate approach is sufficient. The EZ method is a
 consistent convention to provide centralized and reusable boilerplate error
 handling on an _optional_ basis, both for existing library functions and your
