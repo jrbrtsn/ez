@@ -719,3 +719,18 @@ ez_proto (int, atexit,
          , "atexit() failed");
    abort();
 }
+
+/***************************************************/
+ez_proto (int, chdir,
+   const char *path)
+{
+   int rtn= chdir (path);
+   if(0 == rtn) return 0;
+
+   _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+         , fileName, lineNo, funcName
+#endif
+         , "chdir(\"%s\") failed", path);
+   abort();
+}
