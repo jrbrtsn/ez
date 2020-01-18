@@ -47,18 +47,6 @@ glibc calls with boilerplate error handling.
 extern "C" {
 #endif
 
-ez_proto (char*, strptime,
-      const char *s,
-      const char *format,
-      struct tm *tm);
-#ifdef DEBUG
-#       define ez_strptime(...) \
-   _ez_strptime(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_strptime(...) \
-   _ez_strptime(__VA_ARGS__)
-#endif
-
 ez_proto (int, access,
       const char *pathname,
       int mode);
@@ -70,62 +58,122 @@ ez_proto (int, access,
    _ez_access(__VA_ARGS__)
 #endif
 
-ez_proto (int, open,
+ez_proto (int, atexit,
+   void(*function)(void));
+#ifdef DEBUG
+#       define ez_atexit(...) \
+         _ez_atexit(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_atexit(...) \
+         _ez_atexit(__VA_ARGS__)
+#endif
+
+ez_proto (int, chdir,
+   const char *path);
+#ifdef DEBUG
+#       define ez_chdir(...) \
+         _ez_chdir(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_chdir(...) \
+         _ez_atexit(__VA_ARGS__)
+#endif
+
+ez_proto (int, chown,
       const char *pathname,
-      int flags,
+      uid_t owner,
+      gid_t group);
+#ifdef DEBUG
+#       define ez_chown(...) \
+         _ez_chown(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_chown(...) \
+         _ez_chown(__VA_ARGS__)
+#endif
+
+ez_proto (int, close,
+      int fd);
+#ifdef DEBUG
+#       define ez_close(...) \
+         _ez_close(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_close(...) \
+         _ez_close(__VA_ARGS__)
+#endif
+
+ez_proto (int, closedir,
+      DIR *dirp);
+#ifdef DEBUG
+#       define ez_closedir(...) \
+   _ez_closedir(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_closedir(...) \
+   _ez_closedir(__VA_ARGS__)
+#endif
+
+ez_proto (int, fchmod,
+      int fd,
       mode_t mode);
 #ifdef DEBUG
-#       define ez_open(...) \
-   _ez_open(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_fchmod(...) \
+         _ez_fchmod(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_open(...) \
-   _ez_open(__VA_ARGS__)
+#       define ez_fchmod(...) \
+         _ez_fchmod(__VA_ARGS__)
 #endif
 
+ez_proto (int, fchown,
+      int fd,
+      uid_t owner,
+      gid_t group);
+#ifdef DEBUG
+#       define ez_fchown(...) \
+         _ez_fchown(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_fchown(...) \
+         _ez_fchown(__VA_ARGS__)
+#endif
 
-ez_proto (int, fputs,
-      const char *s,
+ez_proto (int, fclose,
       FILE *stream);
 #ifdef DEBUG
-#       define ez_fputs(...) \
-   _ez_fputs(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_fclose(...) \
+         _ez_fclose(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_fputs(...) \
-   _ez_fputs(__VA_ARGS__)
+#       define ez_fclose(...) \
+         _ez_fclose(__VA_ARGS__)
 #endif
 
-ez_proto (int,  fputc,
-      int c,
+ez_proto (int, fflush,
       FILE *stream);
 #ifdef DEBUG
-#       define ez_fputc(...) \
-   _ez_fputc(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_fflush(...) \
+         _ez_fflush(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_fputc(...) \
-   _ez_fputc(__VA_ARGS__)
+#       define ez_fflush(...) \
+         _ez_fflush(__VA_ARGS__)
 #endif
 
-ez_proto (int,  fprintf,
-      FILE *stream,
-      const char *fmt,
-      ...);
+ez_proto (char*, fgets,
+      char *s,
+      int size,
+      FILE *stream);
 #ifdef DEBUG
-#       define ez_fprintf(...) \
-         _ez_fprintf(__FILE__, __LINE__, __func__, __VA_ARGS__)
+#       define ez_fgets(...) \
+         _ez_fgets(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_fprintf(...) \
-         _ez_fprintf(__VA_ARGS__)
+#       define ez_fgets(...) \
+         _ez_fgets(__VA_ARGS__)
 #endif
 
-ez_proto (FILE*, popen,
-      const char *command,
-      const char *type);
+ez_proto (int, flock,
+      int fd,
+      int operation);
 #ifdef DEBUG
-#       define ez_popen(...) \
-         _ez_popen(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_flock(...) \
+         _ez_flock(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_popen(...) \
-         _ez_popen(__VA_ARGS__)
+#       define ez_flock(...) \
+         _ez_flock(__VA_ARGS__)
 #endif
 
 ez_proto (FILE*,  fopen, 
@@ -139,24 +187,38 @@ ez_proto (FILE*,  fopen,
          _ez_fopen(__VA_ARGS__)
 #endif
 
-ez_proto (int, fclose,
-      FILE *stream);
+ez_proto (int, fprintf,
+      FILE *stream,
+      const char *fmt,
+      ...);
 #ifdef DEBUG
-#       define ez_fclose(...) \
-         _ez_fclose(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_fprintf(...) \
+         _ez_fprintf(__FILE__, __LINE__, __func__, __VA_ARGS__)
 #else
-#       define ez_fclose(...) \
-         _ez_fclose(__VA_ARGS__)
+#       define ez_fprintf(...) \
+         _ez_fprintf(__VA_ARGS__)
 #endif
 
-ez_proto (int,  fflush,
+ez_proto (int, fputc,
+      int c,
       FILE *stream);
 #ifdef DEBUG
-#       define ez_fflush(...) \
-         _ez_fflush(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_fputc(...) \
+   _ez_fputc(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_fflush(...) \
-         _ez_fflush(__VA_ARGS__)
+#       define ez_fputc(...) \
+   _ez_fputc(__VA_ARGS__)
+#endif
+
+ez_proto (int, fputs,
+      const char *s,
+      FILE *stream);
+#ifdef DEBUG
+#       define ez_fputs(...) \
+   _ez_fputs(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_fputs(...) \
+   _ez_fputs(__VA_ARGS__)
 #endif
 
 ez_proto (size_t, fread,
@@ -185,48 +247,76 @@ ez_proto (size_t, fwrite,
          _ez_fwrite(__VA_ARGS__)
 #endif
 
-
-ez_proto (int,  pclose,
-      FILE *stream);
+ez_proto (int, getaddrinfo,
+      const char *node,
+      const char *service,
+      const struct addrinfo *hints,
+      struct addrinfo **res);
 #ifdef DEBUG
-#       define ez_pclose(...) \
-         _ez_pclose(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_getaddrinfo(...) \
+         _ez_getaddrinfo(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_pclose(...) \
-         _ez_pclose(__VA_ARGS__)
+#       define ez_getaddrinfo(...) \
+         _ez_getaddrinfo(__VA_ARGS__)
 #endif
 
-ez_proto (char*, fgets,
-      char *s,
-      int size,
-      FILE *stream);
+ez_proto (int, getnameinfo,
+      const struct sockaddr *addr,
+      socklen_t addrlen,
+      char *host,
+      socklen_t hostlen,
+      char *serv,
+      socklen_t servlen,
+      int flags);
 #ifdef DEBUG
-#       define ez_fgets(...) \
-         _ez_fgets(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_getnameinfo(...) \
+         _ez_getnameinfo(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_fgets(...) \
-         _ez_fgets(__VA_ARGS__)
+#       define ez_getnameinfo(...) \
+         _ez_getnameinfo(__VA_ARGS__)
 #endif
 
-ez_proto (int,  remove, 
-      const char *pathname);
+ez_proto (struct group*, getgrnam,
+      const char *name);
 #ifdef DEBUG
-#       define ez_remove(...) \
-         _ez_remove(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_getgrnam(...) \
+         _ez_getgrnam(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_remove(...) \
-         _ez_remove(__VA_ARGS__)
+#       define ez_getgrnam(...) \
+         _ez_getgrnam(__VA_ARGS__)
 #endif
 
-ez_proto (int,  rename,
-      const char *oldpath,
-      const char *newpath);
+ez_proto (int, mkdir,
+      const char *pathname,
+      mode_t mode);
 #ifdef DEBUG
-#       define ez_rename(...) \
-         _ez_rename(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_mkdir(...) \
+         _ez_mkdir(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_rename(...) \
-         _ez_rename(__VA_ARGS__)
+#       define ez_mkdir(...) \
+         _ez_mkdir(__VA_ARGS__)
+#endif
+
+ez_proto (int, mkstemp,
+      char *tmpl);
+#ifdef DEBUG
+#       define ez_mkstemp(...) \
+         _ez_mkstemp(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_mkstemp(...) \
+         _ez_mkstemp(__VA_ARGS__)
+#endif
+
+ez_proto (int, open,
+      const char *pathname,
+      int flags,
+      mode_t mode);
+#ifdef DEBUG
+#       define ez_open(...) \
+   _ez_open(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_open(...) \
+   _ez_open(__VA_ARGS__)
 #endif
 
 ez_proto (DIR*, opendir,
@@ -239,14 +329,25 @@ ez_proto (DIR*, opendir,
    _ez_opendir(__VA_ARGS__)
 #endif
 
-ez_proto (int,  closedir,
-      DIR *dirp);
+ez_proto (int, pclose,
+      FILE *stream);
 #ifdef DEBUG
-#       define ez_closedir(...) \
-   _ez_closedir(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_pclose(...) \
+         _ez_pclose(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_closedir(...) \
-   _ez_closedir(__VA_ARGS__)
+#       define ez_pclose(...) \
+         _ez_pclose(__VA_ARGS__)
+#endif
+
+ez_proto (FILE*, popen,
+      const char *command,
+      const char *type);
+#ifdef DEBUG
+#       define ez_popen(...) \
+         _ez_popen(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_popen(...) \
+         _ez_popen(__VA_ARGS__)
 #endif
 
 ez_proto (struct dirent*, readdir,
@@ -259,14 +360,120 @@ ez_proto (struct dirent*, readdir,
          _ez_readdir(__VA_ARGS__)
 #endif
 
-ez_proto (int, close,
-      int fd);
+ez_proto (int, remove, 
+      const char *pathname);
 #ifdef DEBUG
-#       define ez_close(...) \
-         _ez_close(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#       define ez_remove(...) \
+         _ez_remove(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
-#       define ez_close(...) \
-         _ez_close(__VA_ARGS__)
+#       define ez_remove(...) \
+         _ez_remove(__VA_ARGS__)
+#endif
+
+ez_proto (int, rename,
+      const char *oldpath,
+      const char *newpath);
+#ifdef DEBUG
+#       define ez_rename(...) \
+         _ez_rename(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_rename(...) \
+         _ez_rename(__VA_ARGS__)
+#endif
+
+ez_proto (int, rmdir,
+      const char *pathname);
+#ifdef DEBUG
+#       define ez_rmdir(...) \
+         _ez_rmdir(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_rmdir(...) \
+         _ez_rmdir(__VA_ARGS__)
+#endif
+
+ez_proto (int, setegid,
+      gid_t egid);
+#ifdef DEBUG
+#       define ez_setegid(...) \
+         _ez_setegid(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_setegid(...) \
+         _ez_setegid(__VA_ARGS__)
+#endif
+
+ez_proto (int, seteuid,
+      uid_t euid);
+#ifdef DEBUG
+#       define ez_seteuid(...) \
+         _ez_seteuid(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_seteuid(...) \
+         _ez_seteuid(__VA_ARGS__)
+#endif
+
+ez_proto (int,  setgid,
+      gid_t gid);
+#ifdef DEBUG
+#       define ez_setgid(...) \
+         _ez_setgid(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_setgid(...) \
+         _ez_setgid(__VA_ARGS__)
+#endif
+
+ez_proto (int, setuid,
+      uid_t uid);
+#ifdef DEBUG
+#       define ez_setuid(...) \
+         _ez_setuid(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_setuid(...) \
+         _ez_setuid(__VA_ARGS__)
+#endif
+
+ez_proto (int, stat,
+   const char *pathname,
+      struct stat *statbuf);
+#ifdef DEBUG
+#       define ez_stat(...) \
+         _ez_stat(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_stat(...) \
+         _ez_stat(__VA_ARGS__)
+#endif
+
+ez_proto (char*, strptime,
+      const char *s,
+      const char *format,
+      struct tm *tm);
+#ifdef DEBUG
+#       define ez_strptime(...) \
+   _ez_strptime(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_strptime(...) \
+   _ez_strptime(__VA_ARGS__)
+#endif
+
+ez_proto (int, unlink,
+      const char *pathname);
+#ifdef DEBUG
+#       define ez_unlink(...) \
+         _ez_unlink(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_unlink(...) \
+         _ez_unlink(__VA_ARGS__)
+#endif
+
+ez_proto (ssize_t, write,
+      int fd,
+      const void *buf,
+      size_t count);
+#ifdef DEBUG
+#       define ez_write(...) \
+         _ez_write(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_write(...) \
+         _ez_write(__VA_ARGS__)
 #endif
 
 #if 0
@@ -283,217 +490,6 @@ ez_proto (ssize_t read,
          _ez_read(__VA_ARGS__)
 #endif
 #endif
-
-ez_proto (ssize_t, write,
-      int fd,
-      const void *buf,
-      size_t count);
-#ifdef DEBUG
-#       define ez_write(...) \
-         _ez_write(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_write(...) \
-         _ez_write(__VA_ARGS__)
-#endif
-
-ez_proto (int,  stat,
-   const char *pathname,
-      struct stat *statbuf);
-#ifdef DEBUG
-#       define ez_stat(...) \
-         _ez_stat(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_stat(...) \
-         _ez_stat(__VA_ARGS__)
-#endif
-
-ez_proto (int, mkdir,
-      const char *pathname,
-      mode_t mode);
-#ifdef DEBUG
-#       define ez_mkdir(...) \
-         _ez_mkdir(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_mkdir(...) \
-         _ez_mkdir(__VA_ARGS__)
-#endif
-
-ez_proto (int, rmdir,
-      const char *pathname);
-#ifdef DEBUG
-#       define ez_rmdir(...) \
-         _ez_rmdir(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_rmdir(...) \
-         _ez_rmdir(__VA_ARGS__)
-#endif
-
-ez_proto (int, unlink,
-      const char *pathname);
-#ifdef DEBUG
-#       define ez_unlink(...) \
-         _ez_unlink(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_unlink(...) \
-         _ez_unlink(__VA_ARGS__)
-#endif
-
-ez_proto (int, unlink,
-      const char *pathname);
-#ifdef DEBUG
-#       define ez_unlink(...) \
-         _ez_unlink(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_unlink(...) \
-         _ez_unlink(__VA_ARGS__)
-#endif
-
-ez_proto (int, getaddrinfo,
-      const char *node,
-      const char *service,
-      const struct addrinfo *hints,
-      struct addrinfo **res);
-#ifdef DEBUG
-#       define ez_getaddrinfo(...) \
-         _ez_getaddrinfo(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_getaddrinfo(...) \
-         _ez_getaddrinfo(__VA_ARGS__)
-#endif
-
-ez_proto (int,  getnameinfo,
-      const struct sockaddr *addr,
-      socklen_t addrlen,
-      char *host,
-      socklen_t hostlen,
-      char *serv,
-      socklen_t servlen,
-      int flags);
-#ifdef DEBUG
-#       define ez_getnameinfo(...) \
-         _ez_getnameinfo(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_getnameinfo(...) \
-         _ez_getnameinfo(__VA_ARGS__)
-#endif
-
-ez_proto (int, flock,
-      int fd,
-      int operation);
-#ifdef DEBUG
-#       define ez_flock(...) \
-         _ez_flock(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_flock(...) \
-         _ez_flock(__VA_ARGS__)
-#endif
-
-ez_proto (int, setuid,
-      uid_t uid);
-#ifdef DEBUG
-#       define ez_setuid(...) \
-         _ez_setuid(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_setuid(...) \
-         _ez_setuid(__VA_ARGS__)
-#endif
-
-ez_proto (int,  setgid,
-      gid_t gid);
-#ifdef DEBUG
-#       define ez_setgid(...) \
-         _ez_setgid(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_setgid(...) \
-         _ez_setgid(__VA_ARGS__)
-#endif
-
-
-ez_proto (int, seteuid,
-      uid_t euid);
-#ifdef DEBUG
-#       define ez_seteuid(...) \
-         _ez_seteuid(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_seteuid(...) \
-         _ez_seteuid(__VA_ARGS__)
-#endif
-
-ez_proto (int, setegid,
-      gid_t egid);
-#ifdef DEBUG
-#       define ez_setegid(...) \
-         _ez_setegid(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_setegid(...) \
-         _ez_setegid(__VA_ARGS__)
-#endif
-
-ez_proto (struct group*, getgrnam,
-      const char *name);
-#ifdef DEBUG
-#       define ez_getgrnam(...) \
-         _ez_getgrnam(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_getgrnam(...) \
-         _ez_getgrnam(__VA_ARGS__)
-#endif
-
-ez_proto (int, chown,
-      const char *pathname,
-      uid_t owner,
-      gid_t group);
-#ifdef DEBUG
-#       define ez_chown(...) \
-         _ez_chown(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_chown(...) \
-         _ez_chown(__VA_ARGS__)
-#endif
-
-ez_proto (int, fchown,
-      int fd,
-      uid_t owner,
-      gid_t group);
-#ifdef DEBUG
-#       define ez_fchown(...) \
-         _ez_fchown(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_fchown(...) \
-         _ez_fchown(__VA_ARGS__)
-#endif
-
-ez_proto (int, fchmod,
-      int fd,
-      mode_t mode);
-#ifdef DEBUG
-#       define ez_fchmod(...) \
-         _ez_fchmod(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_fchmod(...) \
-         _ez_fchmod(__VA_ARGS__)
-#endif
-
-ez_proto (int, atexit,
-   void(*function)(void));
-#ifdef DEBUG
-#       define ez_atexit(...) \
-         _ez_atexit(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_atexit(...) \
-         _ez_atexit(__VA_ARGS__)
-#endif
-
-ez_proto (int, chdir,
-   const char *path);
-#ifdef DEBUG
-#       define ez_chdir(...) \
-         _ez_chdir(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#else
-#       define ez_chdir(...) \
-         _ez_atexit(__VA_ARGS__)
-#endif
-
 
 #ifdef __cplusplus
 }

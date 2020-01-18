@@ -734,3 +734,19 @@ ez_proto (int, chdir,
          , "chdir(\"%s\") failed", path);
    abort();
 }
+
+/***************************************************/
+ez_proto (int, mkstemp,
+      char *template)
+{
+   int rtn= mkstemp (template);
+   if(-1 != rtn) return rtn;
+
+   _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+         , fileName, lineNo, funcName
+#endif
+         , "mkstemp(\"%s\") failed", template);
+   abort();
+}
+
