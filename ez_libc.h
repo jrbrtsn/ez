@@ -75,7 +75,7 @@ ez_proto (int, chdir,
          _ez_chdir(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #else
 #       define ez_chdir(...) \
-         _ez_atexit(__VA_ARGS__)
+         _ez_chdir(__VA_ARGS__)
 #endif
 
 ez_proto (int, chown,
