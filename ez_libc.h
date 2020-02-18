@@ -165,6 +165,17 @@ ez_proto (char*, fgets,
          _ez_fgets(__VA_ARGS__)
 #endif
 
+ez_proto (FILE*,  fdopen, 
+      int fd,
+      const char *mode);
+#ifdef DEBUG
+#       define ez_fdopen(...) \
+         _ez_fdopen(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_fdopen(...) \
+         _ez_fdopen(__VA_ARGS__)
+#endif
+
 ez_proto (int, flock,
       int fd,
       int operation);
@@ -463,6 +474,19 @@ ez_proto (int, unlink,
 #       define ez_unlink(...) \
          _ez_unlink(__VA_ARGS__)
 #endif
+
+ez_proto (int, vfprintf,
+      FILE *stream,
+      const char *fmt,
+      va_list ap);
+#ifdef DEBUG
+#       define ez_vfprintf(...) \
+         _ez_vfprintf(__FILE__, __LINE__, __func__, __VA_ARGS__)
+#else
+#       define ez_vfprintf(...) \
+         _ez_vfprintf(__VA_ARGS__)
+#endif
+
 
 ez_proto (ssize_t, write,
       int fd,

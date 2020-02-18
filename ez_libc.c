@@ -102,6 +102,24 @@ ez_proto (FILE*, popen,
 }
 
 /***************************************************/
+ez_proto (FILE*,  fdopen, 
+      int fd,
+      const char *mode)
+{
+   FILE *rtn= fdopen (fd, mode);
+   if (!rtn) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "fdopen(%d, \"%s\") failed", fd, mode);
+      abort();
+   }
+   return rtn;
+}
+
+
+/***************************************************/
 ez_proto (FILE*,  fopen, 
       const char *pathname,
       const char *mode)
@@ -748,5 +766,25 @@ ez_proto (int, mkstemp,
 #endif
          , "mkstemp(\"%s\") failed", template);
    abort();
+}
+
+/***************************************************/
+ez_proto (int, vfprintf,
+      FILE *stream,
+      const char *fmt,
+      va_list ap)
+{
+   va_list arglist;
+   va_copy(arglist, ap);
+   int rtn= vfprintf (stream, fmt, arglist);
+   if (0 > rtn) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "vfprintf() failed");
+      abort();
+   }
+   return rtn;
 }
 
