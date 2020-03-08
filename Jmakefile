@@ -1,7 +1,7 @@
 baseDir := $(HOWCO_BASEDIR)
 libsDir := $(baseDir)/lib
 projectName := ez
-versions := debug release
+versions := debug release valgrind
 #cc_exe := tsj
 libraries := ez
 #install_dir := $(HOME)/bin
@@ -36,6 +36,12 @@ endif
 ifeq ($(version),release)
 local_cppflags := $(local_cppflags) -DNDEBUG
 local_codeflags :=  -g0 -O3 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
+local_ldflags := $(local_ldflags) -L$(libsDir)/$(version)
+endif
+
+ifeq ($(version),valgrind)
+local_cppflags := $(local_cppflags) -DNDEBUG
+local_codeflags :=  -g2 -O3 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
 local_ldflags := $(local_ldflags) -L$(libsDir)/$(version)
 endif
 
