@@ -769,6 +769,23 @@ ez_proto (int, mkstemp,
 }
 
 /***************************************************/
+ez_proto (int, mkstemps,
+      char *template,
+      int suffixlen)
+{
+   int rtn= mkstemps (template, suffixlen);
+   if(-1 != rtn) return rtn;
+
+   _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+         , fileName, lineNo, funcName
+#endif
+         , "mkstemps(\"%s\") failed", template);
+   abort();
+}
+
+
+/***************************************************/
 ez_proto (int, vfprintf,
       FILE *stream,
       const char *fmt,

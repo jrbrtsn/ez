@@ -318,6 +318,16 @@ ez_proto (int, mkstemp,
          _ez_mkstemp(__VA_ARGS__)
 #endif
 
+ez_proto (int, mkstemps, char *tmpl, int suffixlen);
+#ifdef DEBUG
+#       define ez_mkstemps(...) \
+         _ez_mkstemps(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_mkstemps(...) \
+         _ez_mkstemps(__VA_ARGS__)
+#endif
+
+
 ez_proto (int, open,
       const char *pathname,
       int flags,
