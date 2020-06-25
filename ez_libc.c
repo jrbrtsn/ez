@@ -137,6 +137,21 @@ ez_proto (FILE*,  fopen,
 }
 
 /***************************************************/
+ez_proto (pid_t,  fork)
+{
+   int rtn= fork ();
+   if (-1 == rtn) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "fork() failed");
+      abort();
+   }
+   return rtn;
+}
+
+/***************************************************/
 ez_proto (int, fclose,
       FILE *stream)
 {
@@ -223,6 +238,21 @@ ez_proto (int,  pclose,
 }
 
 /***************************************************/
+ez_proto (int, pipe, int pipefd[2])
+{
+   int rtn= pipe (pipefd);
+   if (-1 == rtn) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "pipe() failed");
+      abort();
+   }
+   return rtn;
+}
+
+/***************************************************/
 ez_proto (char*, fgets,
       char *s,
       int size,
@@ -300,6 +330,39 @@ ez_proto (int,  closedir,
             , fileName, lineNo, funcName
 #endif
             , "closedir() failed");
+      abort();
+   }
+   return rtn;
+}
+
+/***************************************************/
+ez_proto (int, dup2, int oldfd, int newfd)
+{
+   int rtn= dup2 (oldfd, newfd);
+   if (-1 == rtn) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "dup2() failed");
+      abort();
+   }
+   return rtn;
+}
+
+/***************************************************/
+ez_proto (int, execve,
+      const char *filename,
+      char *const argv[],
+      char *const envp[])
+{
+   int rtn= execve(filename, argv, envp);
+   if (-1 == rtn) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "execve() failed");
       abort();
    }
    return rtn;

@@ -110,6 +110,28 @@ ez_proto (int, closedir,
    _ez_closedir(__VA_ARGS__)
 #endif
 
+ez_proto (int, dup2, int oldfd, int newfd);
+#ifdef DEBUG
+#       define ez_dup2(...) \
+   _ez_dup2(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_dup2(...) \
+   _ez_dup2(__VA_ARGS__)
+#endif
+
+ez_proto (int, execve,
+      const char *filename,
+      char *const argv[],
+      char *const envp[]);
+#ifdef DEBUG
+#       define ez_execve(...) \
+   _ez_execve(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_execve(...) \
+   _ez_execve(__VA_ARGS__)
+#endif
+
+
 ez_proto (int, fchmod,
       int fd,
       mode_t mode);
@@ -196,6 +218,15 @@ ez_proto (FILE*,  fopen,
 #else
 #       define ez_fopen(...) \
          _ez_fopen(__VA_ARGS__)
+#endif
+
+ez_proto (pid_t,  fork);
+#ifdef DEBUG
+#       define ez_fork(...) \
+         _ez_fork(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_fork(...) \
+         _ez_fork(__VA_ARGS__)
 #endif
 
 ez_proto (int, fprintf,
@@ -359,6 +390,16 @@ ez_proto (int, pclose,
 #       define ez_pclose(...) \
          _ez_pclose(__VA_ARGS__)
 #endif
+
+ez_proto (int, pipe, int pipefd[2]);
+#ifdef DEBUG
+#       define ez_pipe(...) \
+         _ez_pipe(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_pipe(...) \
+         _ez_pipe(__VA_ARGS__)
+#endif
+
 
 ez_proto (FILE*, popen,
       const char *command,
