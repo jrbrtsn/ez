@@ -1,3 +1,4 @@
+#ifndef __CYGWIN__
 /***************************************************************************
  *   Copyright (C) 2019 by John D. Robertson                               *
  *   john@rrci.com                                                         *
@@ -84,3 +85,5 @@ int _ez_gai_suspend(
          , "gai_suspend() failed");
    abort();
 }
+
+#endif
