@@ -32,7 +32,9 @@ glibc calls with boilerplate error handling.
 #       define _GNU_SOURCE
 #endif
 #include <dirent.h>
-#include <grp.h>
+#ifndef __MINGW32__
+#       include <grp.h>
+#endif
 #include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
