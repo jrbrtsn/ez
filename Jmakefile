@@ -1,4 +1,4 @@
-baseDir := $(HOWCO_BASEDIR)
+baseDir := $(HOWCO_BASEDIR)/src
 libsDir := $(baseDir)/lib
 projectName := ez
 versions := debug release valgrind
