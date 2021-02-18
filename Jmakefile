@@ -40,8 +40,8 @@ local_ldflags := $(local_ldflags) -L$(libsDir)/$(version)
 endif
 
 ifeq ($(version),valgrind)
-local_cppflags := $(local_cppflags) -DNDEBUG
-local_codeflags :=  -g2 -O3 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
+local_cppflags := $(local_cppflags) -I$(baseDir)/oopinc -I$(baseDir)/tsj -D_DEBUG -DDEBUG
+local_codeflags :=  -g2 -O0 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
 local_ldflags := $(local_ldflags) -L$(libsDir)/$(version)
 endif
 
