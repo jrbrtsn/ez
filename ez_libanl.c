@@ -24,17 +24,11 @@
 #include "ez_libanl.h"
 
 /***************************************************/
-int _ez_getaddrinfo_a(
-#ifdef DEBUG
-   const char *fileName,
-   int lineNo,
-   const char *funcName,
-#endif
+ez_proto(int, getaddrinfo_a,
       int mode,
       struct gaicb *list[],
       int nitems,
-      struct sigevent *sevp
-      )
+      struct sigevent *sevp)
 {
    errno= 0;
    int rtn= getaddrinfo_a (mode, list, nitems, sevp);
@@ -55,16 +49,10 @@ int _ez_getaddrinfo_a(
 }
 
 /***************************************************/
-int _ez_gai_suspend(
-#ifdef DEBUG
-   const char *fileName,
-   int lineNo,
-   const char *funcName,
-#endif
+ez_proto (int, gai_suspend,
       const struct gaicb * const list[],
       int nitems,
-      const struct timespec *timeout
-      )
+      const struct timespec *timeout)
 {
    errno= 0;
    int rtn= gai_suspend (list, nitems, timeout);

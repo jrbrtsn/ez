@@ -33,7 +33,7 @@ extern "C" {
 /* Forward declaration */
 struct gaicb;
 
-ez_proto(int, getaddrinfo_a,
+ez_hdr_proto(int, getaddrinfo_a,
       int mode,
       struct gaicb *list[],
       int nitems,
@@ -46,7 +46,7 @@ ez_proto(int, getaddrinfo_a,
          _ez_getaddrinfo_a(__VA_ARGS__)
 #endif
 
-ez_proto (int, gai_suspend,
+ez_hdr_proto (int, gai_suspend,
       const struct gaicb * const list[],
       int nitems,
       const struct timespec *timeout);
