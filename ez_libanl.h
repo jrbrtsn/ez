@@ -30,6 +30,9 @@
 extern "C" {
 #endif
 
+/* Forward declaration */
+struct gaicb;
+
 ez_proto(int, getaddrinfo_a,
       int mode,
       struct gaicb *list[],
