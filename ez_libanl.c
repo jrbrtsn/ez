@@ -1,4 +1,4 @@
-#ifndef __CYGWIN__
+#if !defined __CYGWIN__ && !defined __MINGW32__
 /***************************************************************************
  *   Copyright (C) 2019 by John D. Robertson                               *
  *   john@rrci.com                                                         *

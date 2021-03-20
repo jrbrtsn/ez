@@ -1,7 +1,7 @@
-baseDir := $(HOWCO_BASEDIR)
+baseDir := $(HOWCO_BASEDIR)/src
 libsDir := $(baseDir)/lib
 projectName := ez
-versions := debug release
+versions := debug release valgrind
 #cc_exe := tsj
 libraries := ez
 #install_dir := $(HOME)/bin
@@ -39,16 +39,24 @@ local_codeflags :=  -g0 -O3 -Wreturn-type -Wformat -Wchar-subscripts -Wparenthes
 local_ldflags := $(local_ldflags) -L$(libsDir)/$(version)
 endif
 
+ifeq ($(version),valgrind)
+local_cppflags := $(local_cppflags) -I$(baseDir)/oopinc -I$(baseDir)/tsj -D_DEBUG -DDEBUG
+local_codeflags :=  -g2 -O0 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
+local_ldflags := $(local_ldflags) -L$(libsDir)/$(version)
+endif
+
 makefile := Makefile
 ifndef version
-.PHONY : all clean tidy install uninstall debug release
-all :  debug release
+.PHONY : all clean tidy install uninstall debug release valgrind
+all :  debug release valgrind
 debug  :
 	@$(MAKE) version=debug library=ez libType=STATIC libsDir=$(libsDir) --no-builtin-rules -f $(makefile) --no-print-directory
 release  :
 	@$(MAKE) version=release library=ez libType=STATIC libsDir=$(libsDir) --no-builtin-rules -f $(makefile) --no-print-directory
+valgrind  :
+	@$(MAKE) version=valgrind library=ez libType=STATIC libsDir=$(libsDir) --no-builtin-rules -f $(makefile) --no-print-directory
 install : release
-	@[ -e install.sh ] && INSTALLDIR=$(install_dir) INSTALLTYPE=$(install_type) sudo ./install.sh
+	@[ -e install.sh ] && INSTALLDIR=$(install_dir) INSTALLTYPE=$(install_type) sudo -E ./install.sh
 uninstall :
 clean :
 	$(RM) -r $(versions) core *.bak *.tab.h *.tab.c *.yy.c *.yy.h

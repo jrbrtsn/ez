@@ -136,6 +136,7 @@ ez_proto (FILE*,  fopen,
    return rtn;
 }
 
+#ifndef __MINGW32__
 /***************************************************/
 ez_proto (pid_t,  fork)
 {
@@ -150,6 +151,7 @@ ez_proto (pid_t,  fork)
    }
    return rtn;
 }
+#endif // __MINGW32__
 
 /***************************************************/
 ez_proto (int, fclose,
@@ -237,6 +239,7 @@ ez_proto (int,  pclose,
    return rtn;
 }
 
+#ifndef __MINGW32__
 /***************************************************/
 ez_proto (int, pipe, int pipefd[2])
 {
@@ -251,6 +254,7 @@ ez_proto (int, pipe, int pipefd[2])
    }
    return rtn;
 }
+#endif // __MINGW32__
 
 /***************************************************/
 ez_proto (char*, fgets,
@@ -438,6 +442,7 @@ ez_proto (int,  stat,
    return rtn;
 }
 
+#ifndef __MINGW32__
 /***************************************************/
 ez_proto (int, mkdir,
       const char *pathname,
@@ -454,6 +459,7 @@ ez_proto (int, mkdir,
    }
    return rtn;
 }
+#endif // __MINGW32__
 
 /***************************************************/
 ez_proto (int, rmdir,
@@ -487,6 +493,7 @@ ez_proto (int, unlink,
    return rtn;
 }
 
+#ifndef __MINGW32__
 /***************************************************/
 ez_proto (int, getaddrinfo,
       const char *node,
@@ -585,6 +592,7 @@ ez_proto (int, flock,
    abort();
 
 }
+#endif // __MINGW32__
 
 /***************************************************/
 ez_proto (int, open,
@@ -636,6 +644,7 @@ ez_proto (int, access,
 
 }
 
+#ifndef __MINGW32__
 /***************************************************/
 ez_proto (char*, strptime,
       const char *s,
@@ -785,6 +794,7 @@ ez_proto (int,  setgid, gid_t gid)
          , "setgid(%d) failed", (int)gid);
    abort();
 }
+#endif // __MINGW32__
 
 /***************************************************/
 ez_proto (int, atexit,

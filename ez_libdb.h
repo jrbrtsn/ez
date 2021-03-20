@@ -16,6 +16,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#if !defined __CYGWIN__ && !defined __MINGW32__
+
 #ifndef EZ_LIBDB_H
 #define EZ_LIBDB_H
 
@@ -127,4 +129,6 @@ ez_proto (int, db_fd,
 #endif
 
 
-#endif
+#endif // EZ_LIBDB_H
+
+#endif 

@@ -34,11 +34,11 @@ glibc calls with boilerplate error handling.
 #include <dirent.h>
 #ifndef __MINGW32__
 #       include <grp.h>
+#       include <netdb.h>
+#       include <sys/socket.h>
 #endif
-#include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
@@ -80,6 +80,7 @@ ez_proto (int, chdir,
          _ez_chdir(__VA_ARGS__)
 #endif
 
+#ifndef __MINGW32__
 ez_proto (int, chown,
       const char *pathname,
       uid_t owner,
@@ -91,6 +92,7 @@ ez_proto (int, chown,
 #       define ez_chown(...) \
          _ez_chown(__VA_ARGS__)
 #endif
+#endif // __MINGW32__
 
 ez_proto (int, close,
       int fd);
@@ -145,6 +147,7 @@ ez_proto (int, fchmod,
          _ez_fchmod(__VA_ARGS__)
 #endif
 
+#ifndef __MINGW32__
 ez_proto (int, fchown,
       int fd,
       uid_t owner,
@@ -156,6 +159,7 @@ ez_proto (int, fchown,
 #       define ez_fchown(...) \
          _ez_fchown(__VA_ARGS__)
 #endif
+#endif // __MINGW32__
 
 ez_proto (int, fclose,
       FILE *stream);
@@ -222,6 +226,7 @@ ez_proto (FILE*,  fopen,
          _ez_fopen(__VA_ARGS__)
 #endif
 
+#ifndef __MINGW32__
 ez_proto (pid_t,  fork);
 #ifdef DEBUG
 #       define ez_fork(...) \
@@ -230,6 +235,7 @@ ez_proto (pid_t,  fork);
 #       define ez_fork(...) \
          _ez_fork(__VA_ARGS__)
 #endif
+#endif // __MINGW32__
 
 ez_proto (int, fprintf,
       FILE *stream,
@@ -291,6 +297,7 @@ ez_proto (size_t, fwrite,
          _ez_fwrite(__VA_ARGS__)
 #endif
 
+#ifndef __MINGW32__
 ez_proto (int, getaddrinfo,
       const char *node,
       const char *service,
@@ -319,6 +326,7 @@ ez_proto (int, getnameinfo,
 #       define ez_getnameinfo(...) \
          _ez_getnameinfo(__VA_ARGS__)
 #endif
+#endif // __MINGW32__
 
 ez_proto (struct group*, getgrnam,
       const char *name);
@@ -455,6 +463,7 @@ ez_proto (int, rmdir,
          _ez_rmdir(__VA_ARGS__)
 #endif
 
+#ifndef __MINGW32__
 ez_proto (int, setegid,
       gid_t egid);
 #ifdef DEBUG
@@ -494,6 +503,7 @@ ez_proto (int, setuid,
 #       define ez_setuid(...) \
          _ez_setuid(__VA_ARGS__)
 #endif
+#endif // __MINGW32__
 
 ez_proto (int, stat,
    const char *pathname,

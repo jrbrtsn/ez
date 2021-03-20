@@ -16,6 +16,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#if !defined __CYGWIN__ && !defined __MINGW32__
+
 #define _GNU_SOURCE
 #include <stdlib.h>
 
@@ -168,3 +171,5 @@ ez_proto (int, db_fd, DB *db, int *fdp)
          , "DB->fd() failed");
    abort();
 }
+
+#endif
