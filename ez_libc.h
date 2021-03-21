@@ -32,7 +32,9 @@ glibc calls with boilerplate error handling.
 #       define _GNU_SOURCE
 #endif
 #include <dirent.h>
-#ifndef __MINGW32__
+#ifdef __MINGW32__
+#       include <winsock2.h>
+#else
 #       include <grp.h>
 #       include <netdb.h>
 #       include <sys/socket.h>
@@ -561,6 +563,32 @@ ez_proto (ssize_t, write,
 #else
 #       define ez_write(...) \
          _ez_write(__VA_ARGS__)
+#endif
+
+ez_proto (ssize_t, send,
+      int fd,
+      const void *buf,
+      size_t count,
+      int flags);
+#ifdef DEBUG
+#       define ez_send(...) \
+         _ez_send(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_send(...) \
+         _ez_send(__VA_ARGS__)
+#endif
+
+ez_proto (ssize_t, recv,
+      int fd,
+      void *buf,
+      size_t count,
+      int flags);
+#ifdef DEBUG
+#       define ez_recv(...) \
+         _ez_recv(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_recv(...) \
+         _ez_recv(__VA_ARGS__)
 #endif
 
 #if 0

@@ -1,3 +1,6 @@
+# Determine if this is getting built by mingw
+MINGW := $(shell if $(CC) -dumpmachine | grep -q mingw; then echo yes; else echo no; fi)
+
 baseDir := $(HOWCO_BASEDIR)/src
 libsDir := $(baseDir)/lib
 projectName := ez
@@ -23,26 +26,30 @@ local_cppflags := -I ../liboopinc -I.
 
 endif
 
+# MINGW specific stuff
+ifeq ($(MINGW), yes)
+   local_cppflags += -D_WIN32_WINNT=0x0600
+endif
 
 ########################################
 # Set up custom compile flags here.    #
 ########################################
 ifeq ($(version),debug)
-local_cppflags := $(local_cppflags) -D_DEBUG -DDEBUG
-local_codeflags := -g2 -O0 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
-local_ldflags := $(local_ldflags) -L$(libsDir)/$(version)
+local_cppflags += -D_DEBUG -DDEBUG
+local_codeflags += -g2 -O0 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
+local_ldflags += -L$(libsDir)/$(version)
 endif
 
 ifeq ($(version),release)
-local_cppflags := $(local_cppflags) -DNDEBUG
-local_codeflags :=  -g0 -O3 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
-local_ldflags := $(local_ldflags) -L$(libsDir)/$(version)
+local_cppflags += -DNDEBUG
+local_codeflags +=  -g0 -O3 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
+local_ldflags += -L$(libsDir)/$(version)
 endif
 
 ifeq ($(version),valgrind)
-local_cppflags := $(local_cppflags) -I$(baseDir)/oopinc -I$(baseDir)/tsj -D_DEBUG -DDEBUG
-local_codeflags :=  -g2 -O0 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
-local_ldflags := $(local_ldflags) -L$(libsDir)/$(version)
+local_cppflags += -I$(baseDir)/oopinc -I$(baseDir)/tsj -D_DEBUG -DDEBUG
+local_codeflags +=  -g2 -O0 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
+local_ldflags += -L$(libsDir)/$(version)
 endif
 
 makefile := Makefile
@@ -168,16 +175,16 @@ $(dep) : $(yacc_output) $(lex_output)
 
 # Recipes to build .d files
 $(version)/%.d: %.cc
-	@set -e; $(CXX) -M $(CPPFLAGS) $(local_cppflags) $< \
+	@set -e; $(CXX) -M $(CPPFLAGS) $(local_cxxflags) $(local_cppflags) $< \
          | sed 's/\($*\)\.o[ :]*/$(version)\/\1.o $(version)\/\1.d : /' > $@
 $(version)/%.d: %.cxx
-	@set -e; $(CXX) -M $(CPPFLAGS) $(local_cppflags) $< \
+	@set -e; $(CXX) -M $(CPPFLAGS) $(local_cxxflags) $(local_cppflags) $< \
          | sed 's/\($*\)\.o[ :]*/$(version)\/\1.o $(version)\/\1.d : /' > $@
 $(version)/%.d: %.cpp
-	@set -e; $(CXX) -M $(CPPFLAGS) $(local_cppflags) $< \
+	@set -e; $(CXX) -M $(CPPFLAGS) $(local_cxxflags) $(local_cppflags) $< \
          | sed 's/\($*\)\.o[ :]*/$(version)\/\1.o $(version)\/\1.d : /' > $@
 $(version)/%.d: %.C
-	@set -e; $(CXX) -M $(CPPFLAGS) $(local_cppflags) $< \
+	@set -e; $(CXX) -M $(CPPFLAGS) $(local_cxxflags) $(local_cppflags) $< \
          | sed 's/\($*\)\.o[ :]*/$(version)\/\1.o $(version)\/\1.d : /' > $@
 $(version)/%.d: %.c
 	@set -e; $(CC) -M $(CPPFLAGS) $(local_cppflags) $< \
@@ -203,13 +210,13 @@ $(version)/%.d: %.asm
 
 # Recipes to build object files
 $(version)/%.o: %.cc
-	$(CXX) -c $(CXXFLAGS) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $< -o $@
+	$(CXX) -c $(CXXFLAGS) $(local_cxxflags) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $< -o $@
 $(version)/%.o: %.cxx
-	$(CXX) -c $(CXXFLAGS) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $< -o $@
+	$(CXX) -c $(CXXFLAGS) $(local_cxxflags) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $< -o $@
 $(version)/%.o: %.cpp
-	$(CXX) -c $(CXXFLAGS) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $< -o $@
+	$(CXX) -c $(CXXFLAGS) $(local_cxxflags) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $< -o $@
 $(version)/%.o: %.C
-	$(CXX) -c $(CXXFLAGS) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $< -o $@
+	$(CXX) -c $(CXXFLAGS) $(local_cxxflags) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $< -o $@
 $(version)/%.o: %.c
 	$(CC) -c $(CCFLAGS) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $< -o $@
 $(version)/%.o: %.f
@@ -218,6 +225,6 @@ $(version)/%.o: %.for
 	$(FC) -c $(FFLAGS) $(local_codeflags) $< -o $@
 $(version)/qt_%.o: %.h
 	$(QTDIR)/bin/moc $< -o $(version)/qt_$*.cxx
-	$(CXX) -c $(CXXFLAGS) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $(version)/qt_$*.cxx -o $(version)/qt_$*.o
+	$(CXX) -c $(CXXFLAGS) $(local_cxxflags) $(local_codeflags) $(CPPFLAGS) $(local_cppflags) $(version)/qt_$*.cxx -o $(version)/qt_$*.o
 
 endif # version

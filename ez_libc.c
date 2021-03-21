@@ -17,6 +17,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #define _GNU_SOURCE
+#include <errno.h>
 #include <stdlib.h>
 #include <sys/file.h>
 #include <unistd.h>
@@ -424,6 +425,120 @@ ez_proto (ssize_t, write,
    }
    return rtn;
 }
+
+/***************************************************/
+ez_proto (ssize_t, send,
+      int fd,
+      const void *buf,
+      size_t count,
+      int flags)
+{
+   ssize_t rtn= send (fd, buf, count, flags);
+#ifdef __MINGW32__
+      /* Win32 */
+   if(SOCKET_ERROR == rtn) {
+      rtn= -1;
+      int wsaerr= WSAGetLastError();
+      switch(wsaerr) {
+         case WSAEWOULDBLOCK:
+            errno= EAGAIN;
+            break;
+         case WSAECONNRESET:
+            errno= ECONNRESET;
+            break;
+         case WSAEINTR:
+            errno= EINTR;
+            break;
+         case WSAENETRESET:
+         case WSAECONNABORTED:
+         case WSAETIMEDOUT:
+         break;
+
+         default:
+         _eprintf(
+#ifdef DEBUG
+               fileName, lineNo, funcName,
+#endif
+               "send(fd= %d) failed with WSA error= %d", fd, wsaerr);
+         abort();
+      }
+   }
+      
+#else
+
+   /* POSIX */
+   if (-1 == rtn) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "send(fd= %d) failed", fd);
+      abort();
+   }
+#endif
+   return rtn;
+}
+
+/***************************************************/
+ez_proto (ssize_t, recv,
+      int fd,
+      void *buf,
+      size_t count,
+      int flags)
+{
+   ssize_t rtn= recv (fd, buf, count, flags);
+#ifdef __MINGW32__
+      /* Win32 */
+   if(SOCKET_ERROR == rtn) {
+      rtn= -1;
+      int wsaerr= WSAGetLastError();
+eprintf("recv() WSAError= %d", wsaerr);
+      switch(wsaerr) {
+         case WSAEWOULDBLOCK:
+            errno= EAGAIN;
+            break;
+         case WSAECONNRESET:
+            errno= ECONNREFUSED;
+            break;
+         case WSAEINTR:
+            errno= EINTR;
+            break;
+         case WSAENETRESET:
+         case WSAECONNABORTED:
+         case WSAETIMEDOUT:
+            break;
+
+         default:
+         _eprintf(
+#ifdef DEBUG
+               fileName, lineNo, funcName,
+#endif
+               "recv(fd= %d) failed with WSA error= %d", fd, wsaerr);
+         abort();
+      }
+   }
+      
+#else
+   if (-1 == rtn) {
+      /* POSIX */
+      switch(errno) {
+         case EAGAIN:
+         case ECONNREFUSED:
+            break;
+
+         default:
+         _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+               , fileName, lineNo, funcName
+#endif
+               , "recv(fd= %d) failed", fd);
+         abort();
+      }
+   }
+#endif
+   return rtn;
+}
+
 
 /***************************************************/
 ez_proto (int,  stat,
