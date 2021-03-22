@@ -30,25 +30,33 @@ endif
 ifeq ($(MINGW), yes)
    local_cppflags += -D_WIN32_WINNT=0x0600
 endif
+local_cppflags +=  -I$(baseDir)/libez -I$(baseDir)/liboopinc -I$(baseDir)/libtsj -I$(baseDir)/libocs -I$(baseDir)/libcms
+local_codeflags +=  \
+   -Wreturn-type \
+   -Wformat \
+   -Wchar-subscripts \
+   -Wparentheses -Wcast-qual \
+   -Wmissing-declarations \
+
 
 ########################################
 # Set up custom compile flags here.    #
 ########################################
 ifeq ($(version),debug)
 local_cppflags += -D_DEBUG -DDEBUG
-local_codeflags += -g2 -O0 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
+local_codeflags += -g2 -O0
 local_ldflags += -L$(libsDir)/$(version)
 endif
 
 ifeq ($(version),release)
 local_cppflags += -DNDEBUG
-local_codeflags +=  -g0 -O3 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
+local_codeflags +=  -g0 -O3
 local_ldflags += -L$(libsDir)/$(version)
 endif
 
 ifeq ($(version),valgrind)
-local_cppflags += -I$(baseDir)/oopinc -I$(baseDir)/tsj -D_DEBUG -DDEBUG
-local_codeflags +=  -g2 -O0 -Wreturn-type -Wformat -Wchar-subscripts -Wparentheses -Wcast-qual -Wmissing-declarations
+local_cppflags += -D_DEBUG -DDEBUG
+local_codeflags +=  -g2 -O0
 local_ldflags += -L$(libsDir)/$(version)
 endif
 

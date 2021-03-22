@@ -557,12 +557,27 @@ ez_proto (int,  stat,
    return rtn;
 }
 
-#ifndef __MINGW32__
 /***************************************************/
 ez_proto (int, mkdir,
       const char *pathname,
       mode_t mode)
 {
+#ifdef __MINGW32__
+
+   /* Win32 */
+   int rtn= mkdir (pathname);
+   if (-1 == rtn) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "mkdir(\"%s\") failed", pathname);
+      abort();
+   }
+
+#else // __MINGW32__
+
+   /* POSIX */
    int rtn= mkdir (pathname, mode);
    if (-1 == rtn) {
       _sys_eprintf((const char*(*)(int))strerror
@@ -572,9 +587,9 @@ ez_proto (int, mkdir,
             , "mkdir(\"%s\", %04x) failed", pathname, (unsigned)mode);
       abort();
    }
+#endif // __MINGW32__
    return rtn;
 }
-#endif // __MINGW32__
 
 /***************************************************/
 ez_proto (int, rmdir,
