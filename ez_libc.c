@@ -343,7 +343,11 @@ ez_proto (int,  closedir,
 /***************************************************/
 ez_proto (int, dup2, int oldfd, int newfd)
 {
+#ifdef _WIN32
+   int rtn= _dup2 (oldfd, newfd);
+#else
    int rtn= dup2 (oldfd, newfd);
+#endif
    if (-1 == rtn) {
       _sys_eprintf((const char*(*)(int))strerror
 #ifdef DEBUG
