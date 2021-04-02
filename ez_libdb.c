@@ -17,7 +17,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#if !defined __CYGWIN__ && !defined __MINGW32__
+#ifndef _WIN32
 
 #define _GNU_SOURCE
 #include <stdlib.h>

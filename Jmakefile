@@ -30,7 +30,6 @@ endif
 ifeq ($(MINGW), yes)
    local_cppflags += -D_WIN32_WINNT=0x0600
 endif
-local_cppflags +=  -I$(baseDir)/libez -I$(baseDir)/liboopinc -I$(baseDir)/libtsj -I$(baseDir)/libocs -I$(baseDir)/libcms
 local_codeflags +=  \
    -Wreturn-type \
    -Wformat \
