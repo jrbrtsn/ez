@@ -330,6 +330,18 @@ ez_proto (int, getnameinfo,
 #endif
 #endif // __MINGW32__
 
+ez_proto (char*, getcwd,
+      char *buf,
+      size_t size);
+#ifdef DEBUG
+#       define ez_getcwd(...) \
+         _ez_getcwd(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_getcwd(...) \
+         _ez_getcwd(__VA_ARGS__)
+#endif
+
+
 ez_proto (struct group*, getgrnam,
       const char *name);
 #ifdef DEBUG

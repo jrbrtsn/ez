@@ -1012,3 +1012,18 @@ ez_proto (int, vfprintf,
    return rtn;
 }
 
+/***************************************************/
+ez_proto (char*, getcwd,
+      char *buf,
+      size_t size)
+{
+   char *rtn= getcwd (buf, size);
+   if(NULL != rtn) return rtn;
+
+   _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+         , fileName, lineNo, funcName
+#endif
+         , "getcwd() failed");
+   abort();
+}
