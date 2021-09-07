@@ -1027,3 +1027,18 @@ ez_proto (char*, getcwd,
          , "getcwd() failed");
    abort();
 }
+
+/***************************************************/
+ez_proto (void*, malloc, size_t size)
+{
+   void *rtn= malloc (size);
+   if (NULL == rtn) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "malloc(%zu) failed", size);
+      abort();
+   }
+   return rtn;
+}

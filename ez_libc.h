@@ -352,6 +352,15 @@ ez_proto (struct group*, getgrnam,
          _ez_getgrnam(__VA_ARGS__)
 #endif
 
+ez_proto (void*, malloc, size_t size);
+#ifdef DEBUG
+#       define ez_malloc(...) \
+         _ez_malloc(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_malloc(...) \
+         _ez_malloc(__VA_ARGS__)
+#endif
+
 ez_proto (int, mkdir,
       const char *pathname,
       mode_t mode);
