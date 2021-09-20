@@ -286,6 +286,18 @@ ez_proto (size_t, fread,
          _ez_fread(__VA_ARGS__)
 #endif
 
+ez_proto (size_t, fscanf,
+      FILE *stream,
+      const char *format,
+      ...);
+#ifdef DEBUG
+#       define ez_fscanf(...) \
+         _ez_fscanf(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_fscanf(...) \
+         _ez_fscanf(__VA_ARGS__)
+#endif
+
 ez_proto (size_t, fwrite,
       const void *ptr,
       size_t size,

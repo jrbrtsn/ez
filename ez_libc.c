@@ -18,6 +18,7 @@
  ***************************************************************************/
 #define _GNU_SOURCE
 #include <errno.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <sys/file.h>
 #include <unistd.h>
@@ -200,6 +201,28 @@ ez_proto (size_t, fread,
             , fileName, lineNo, funcName
 #endif
             , "fread() failed");
+      abort();
+   }
+   return rtn;
+}
+
+/***************************************************/
+ez_proto (size_t, fscanf,
+      FILE *stream,
+      const char *format,
+      ...)
+{
+   va_list args;
+
+   va_start(args, format);
+   int rtn= vfscanf (stream, format, args);
+   va_end(args);
+   if (ferror(stream)) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "fscanf() failed");
       abort();
    }
    return rtn;
