@@ -31,6 +31,17 @@
 extern "C" {
 #endif
 
+ez_proto (int, pthread_mutex_init,
+      pthread_mutex_t *mutex,
+      const pthread_mutexattr_t *mattr);
+#ifdef DEBUG
+#       define ez_pthread_mutex_init(...) \
+         _ez_pthread_mutex_init(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_pthread_mutex_init(...) \
+         _ez_pthread_mutex_init(__VA_ARGS__)
+#endif
+
 ez_proto (int, pthread_mutex_lock,
       pthread_mutex_t *mutex);
 #ifdef DEBUG

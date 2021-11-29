@@ -25,6 +25,23 @@
 #include "util.h"
 
 /***************************************************/
+ez_proto (int, pthread_mutex_init,
+      pthread_mutex_t *mutex,
+      const pthread_mutexattr_t *mattr)
+{
+   int rtn= pthread_mutex_init (mutex, mattr);
+   if(0 == rtn) return 0;
+
+   errno= rtn;
+   _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+      , fileName, lineNo, funcName
+#endif
+            , "pthread_mutex_init() failed");
+   abort();
+}
+
+/***************************************************/
 ez_proto (int, pthread_mutex_lock, pthread_mutex_t *mutex)
 {
    int rtn= pthread_mutex_lock (mutex);
