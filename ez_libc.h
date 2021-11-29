@@ -286,6 +286,18 @@ ez_proto (size_t, fread,
          _ez_fread(__VA_ARGS__)
 #endif
 
+ez_proto (size_t, fscanf,
+      FILE *stream,
+      const char *format,
+      ...);
+#ifdef DEBUG
+#       define ez_fscanf(...) \
+         _ez_fscanf(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_fscanf(...) \
+         _ez_fscanf(__VA_ARGS__)
+#endif
+
 ez_proto (size_t, fwrite,
       const void *ptr,
       size_t size,
@@ -350,6 +362,15 @@ ez_proto (struct group*, getgrnam,
 #else
 #       define ez_getgrnam(...) \
          _ez_getgrnam(__VA_ARGS__)
+#endif
+
+ez_proto (void*, malloc, size_t size);
+#ifdef DEBUG
+#       define ez_malloc(...) \
+         _ez_malloc(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_malloc(...) \
+         _ez_malloc(__VA_ARGS__)
 #endif
 
 ez_proto (int, mkdir,
