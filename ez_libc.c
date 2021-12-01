@@ -74,11 +74,11 @@ ez_proto (int,  fprintf,
    va_end(args);
 
    if (0 > rtn) {
-      _sys_eprintf((const char*(*)(int))strerror
+      _eprintf(
 #ifdef DEBUG
-            , fileName, lineNo, funcName
+            fileName, lineNo, funcName,
 #endif
-            , "vfprintf() failed returning %d", rtn);
+            "vfprintf() failed returning %d", rtn);
       abort();
    }
 
@@ -1025,11 +1025,11 @@ ez_proto (int, vfprintf,
    va_copy(arglist, ap);
    int rtn= vfprintf (stream, fmt, arglist);
    if (0 > rtn) {
-      _sys_eprintf((const char*(*)(int))strerror
+      _eprintf(
 #ifdef DEBUG
-            , fileName, lineNo, funcName
+            fileName, lineNo, funcName,
 #endif
-            , "vfprintf() failed");
+            "vfprintf() failed");
       abort();
    }
    return rtn;

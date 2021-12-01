@@ -54,7 +54,7 @@ local_ldflags += -L$(libsDir)/$(version)
 endif
 
 ifeq ($(version),valgrind)
-local_cppflags += -D_DEBUG -DDEBUG
+local_cppflags += -DNDEBUG
 local_codeflags +=  -g2 -O0
 local_ldflags += -L$(libsDir)/$(version)
 endif
