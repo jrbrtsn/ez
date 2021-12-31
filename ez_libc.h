@@ -298,6 +298,17 @@ ez_proto (size_t, fscanf,
          _ez_fscanf(__VA_ARGS__)
 #endif
 
+ez_proto (int, fstat,
+      int fd,
+      struct stat *statbuf);
+#ifdef DEBUG
+#       define ez_fstat(...) \
+         _ez_fstat(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_fstat(...) \
+         _ez_fstat(__VA_ARGS__)
+#endif
+
 ez_proto (size_t, fwrite,
       const void *ptr,
       size_t size,

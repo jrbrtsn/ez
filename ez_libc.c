@@ -566,6 +566,23 @@ eprintf("recv() WSAError= %d", wsaerr);
    return rtn;
 }
 
+/***************************************************/
+ez_proto (int,  fstat,
+          int fd,
+          struct stat *statbuf)
+{
+   int rtn= fstat (fd, statbuf);
+   if (-1 == rtn) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "fstat(%d) failed", fd);
+      abort();
+   }
+   return rtn;
+}
+
 
 /***************************************************/
 ez_proto (int,  stat,
