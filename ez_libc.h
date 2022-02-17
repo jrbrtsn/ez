@@ -183,6 +183,15 @@ ez_proto (int, fflush,
          _ez_fflush(__VA_ARGS__)
 #endif
 
+ez_proto (int, fgetc, FILE *stream);
+#ifdef DEBUG
+#       define ez_fgetc(...) \
+         _ez_fgetc(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#       define ez_fgetc(...) \
+         _ez_fgetc(__VA_ARGS__)
+#endif
+
 ez_proto (char*, fgets,
       char *s,
       int size,

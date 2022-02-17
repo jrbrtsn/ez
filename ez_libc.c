@@ -281,6 +281,21 @@ ez_proto (int, pipe, int pipefd[2])
 #endif // __MINGW32__
 
 /***************************************************/
+ez_proto (int, fgetc, FILE *stream)
+{
+   int rtn= fgetc (stream);
+   if(EOF == rtn && !feof(stream)) {
+      _sys_eprintf((const char*(*)(int))strerror
+#ifdef DEBUG
+            , fileName, lineNo, funcName
+#endif
+            , "fgetc() failed");
+      abort();
+   }
+   return rtn;
+}
+
+/***************************************************/
 ez_proto (char*, fgets,
       char *s,
       int size,
